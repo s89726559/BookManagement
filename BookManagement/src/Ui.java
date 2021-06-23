@@ -10,17 +10,19 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 public class Ui {
+	
+	JTextField bookIdText = new JTextField(10);
+    JTextField userId = new JTextField(10);
+    JTextField name = new JTextField(10);
 	
 	public Ui() {
 		
 		JFrame window=new JFrame("Book Management");
 	    window.setBounds(0,0,550,300);
 	    window.setLocationRelativeTo(null);
-	    window.setVisible(true);
 	    window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	    
 	    Container cp=window.getContentPane();
@@ -72,17 +74,16 @@ public class Ui {
     	button9.addActionListener(handler);
     	cp.add(button9);
     	
+	    window.setVisible(true);
 	}
 	
 	
 	public class ButtonHandler implements ActionListener {
 		
-	    JTextField bookId = new JTextField(10);
-	    JTextField userId = new JTextField(10);
-	    JTextField name = new JTextField(10);
-		
 		@Override
 		public void actionPerformed(ActionEvent event) {
+			
+			
 			//System.out.printf("%s",event.getActionCommand()); //debug
 			//event Add Book
 			if(event.getActionCommand()=="Add Book") {
@@ -152,9 +153,11 @@ public class Ui {
 			    JLabel label2=new JLabel(" userId:");
 			    
 			    JButton btnBorrow = new JButton("借書");
+			    ButtonHandler handler =new ButtonHandler();
+			    btnBorrow.addActionListener(handler);
 			    
 			    panel[0].add(label1);
-			    panel[0].add(bookId);
+			    panel[0].add(bookIdText);
 			    panel[0].add(label2);
 			    panel[0].add(userId);
 			    panel[1].add(btnBorrow);
@@ -167,7 +170,7 @@ public class Ui {
 			}
 			if(event.getActionCommand()=="借書") {
 			    Sql sql=new Sql();
-			    sql.borrowBook(Integer.parseInt( bookId.getText()), Integer.parseInt(userId.getText()) );
+			    sql.borrowBook(Integer.parseInt( bookIdText.getText()), Integer.parseInt(userId.getText()) );
 			}
 			
 			//event Return Book
@@ -191,9 +194,11 @@ public class Ui {
 			    JLabel label2=new JLabel(" userId:");
 			    
 			    JButton btnReturn = new JButton("還書");
+			    ButtonHandler handler =new ButtonHandler();
+			    btnReturn.addActionListener(handler);
 			    
 			    panel[0].add(label1);
-			    panel[0].add(bookId);
+			    panel[0].add(bookIdText);
 			    panel[0].add(label2);
 			    panel[0].add(userId);
 			    panel[1].add(btnReturn);
@@ -206,7 +211,7 @@ public class Ui {
 			}
 			if(event.getActionCommand()=="還書") {
 			    Sql sql=new Sql();
-			    sql.returnBook(Integer.parseInt( bookId.getText()), Integer.parseInt(userId.getText()) );
+			    sql.returnBook(Integer.parseInt( bookIdText.getText()), Integer.parseInt(userId.getText()) );
 			}
 			
 			//event Find OverDue Book
@@ -232,33 +237,37 @@ public class Ui {
 			    	panel[i].setLayout(new FlowLayout(FlowLayout.LEFT));
 			    }
 			    
-			    JLabel label1=new JLabel("userId:");
+			    //JLabel label1=new JLabel("userId:");
 			    JLabel label2=new JLabel(" name:");
 			    
-			    JButton btnBorrow = new JButton("新增使用者");
+			    JButton btnAdd = new JButton("新增使用者");
+			    ButtonHandler handler =new ButtonHandler();
+			    btnAdd.addActionListener(handler);
 			    
-			    panel[0].add(label1);
-			    panel[0].add(userId);
+			    //panel[0].add(label1);
+			    //panel[0].add(userId);
 			    panel[0].add(label2);
 			    panel[0].add(name);
-			    panel[1].add(btnBorrow);
+			    panel[1].add(btnAdd);
 			    panel[1].setLayout(new FlowLayout(FlowLayout.CENTER));
 			    
 			    contentPane.add(panel[0]);
 			    contentPane.add(panel[1]);
 			    
-			    contentPane.setVisible(true);
+			    Frame.setVisible(true);
 			}			
 			if(event.getActionCommand()=="新增使用者") {
 			    Sql sql=new Sql();
-			    sql.addUser(Integer.parseInt( userId.getText()), name.getText() );
+		        int uId=sql.findUsableUserId();
+		        System.out.printf("%s\n", name.getText());
+			    sql.addUser(uId, name.getText());
 			}
 			
 			//event Find User
 			if(event.getActionCommand()=="Find User") {
 				Sql sql=new Sql();
 				sql.findAllUser();
-			}			
+			}
 			
 			//event Find User
 			if(event.getActionCommand()=="End Program") {

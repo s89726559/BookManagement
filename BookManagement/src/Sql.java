@@ -6,12 +6,7 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Date;
-
-import javax.swing.JOptionPane;
-
 import java.text.SimpleDateFormat; 
-import java.text.DateFormat; 
-import java.text.ParseException; 
 import java.util.ArrayList;
 
 
@@ -147,7 +142,7 @@ public class Sql {
         	ArrayList<Object> array =new ArrayList<>();
         	int i=0;
         	
-        	String msg;
+        	//String msg;
         	//msg=String.format("%-8s%-15s%-8s%-11s%-12s%-8s\n","BookId","Title","Author","Available","BorrowerId","DueDay");
         	System.out.printf("|%-8s|%-15s|%-8s|%-11s|%-12s|%-8s|\n","BookId","Title","Author","Available","BorrowerId","DueDay");
         	// loop through the result set
@@ -226,9 +221,10 @@ public class Sql {
 	//method for adding a User to the table "User"
 	public void addUser(int userId,String name) {
 		
-        String sql = "INSERT INTO User(UserId,Name) VALUES("
+        String sql = "INSERT INTO User(UserId,Name,NumberOfBooksBorrowed) VALUES("
                 + userId+","
                 + '"'+name+'"'
+                +","+0
                 + ");";
         
         try (Connection conn = this.connect();
@@ -462,12 +458,10 @@ public class Sql {
         //sql.addUser(userId,"¤ý¤j©ú");
         //sql.deleteUser(3);
         
-        
         sql.findAllBook();
         sql.findAllUser();
         sql.findOverdueBook();
         
-		
     }
 	*/
 }
